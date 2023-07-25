@@ -93,7 +93,7 @@ int handle_spec(char spec, va_list args)
 			int_to_binary(num, buffer);
 
 
-			printed_chars += write(1, buffer, 33);
+			printed_chars += write(1, buffer, 32);
 			break;
 		}
 		case '%':
