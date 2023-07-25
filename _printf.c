@@ -93,7 +93,7 @@ int handle_spec(char spec, va_list args)
 			int_to_binary(num, buffer);
 
 
-			printed_chars += write(1, buffer, len);
+			printed_chars += write(1, buffer, 33);
 			break;
 		}
 		case '%':
@@ -174,7 +174,7 @@ void int_to_binary(unsigned int num, char *buffer)
 	}
 	for (i = sig_bits - 1; i >= 0; i--)
 	{
-		buffer[j++] = ((num >> i) & 1) + '0';
+		buffer[j++] = ((num >> i) & 1) ? '1' : '0';
 	}
 buffer[j] = '\0';
 }
