@@ -4,7 +4,7 @@
 #include "main.h"
 #include <stdio.h>
 int handle_spec(char spec, va_list args);
-
+int int_to_binary(va_list types);
 /**
  * _printf - prints characters
  * @format: char format
@@ -48,8 +48,8 @@ int _printf(const char *format, ...)
  */
 int handle_spec(char spec, va_list args)
 {
-	int printed_chars = 0;
 	int len = 0;
+	int printed_chars;
 
 	switch (spec)
 	{
@@ -57,7 +57,7 @@ int handle_spec(char spec, va_list args)
 		{
 			char c = va_arg(args, int);
 
-			printed_chars += write(1, &c, 1);
+			write(1, &c, 1);
 			break;
 		}
 		case 's':
@@ -66,14 +66,15 @@ int handle_spec(char spec, va_list args)
 
 			if (s == NULL)
 			{
-				printed_chars += write(1, "(nil)", 6);
-			} else
-			{
-				while (s[len])
-					(len)++;
-				printed_chars += write(1, s, len);
+				write(1, "(nil)", 5);
+				return (5);
 			}
-			break;
+
+			len = 0;
+			while (s[len])
+				len++;
+			write(1, s, len);
+			return (len);
 		}
 		case 'd':
 		case 'i':
@@ -82,34 +83,30 @@ int handle_spec(char spec, va_list args)
 			char buffer[20];
 			int num_len = int_to_string(num, buffer);
 
-			printed_chars += write(1, buffer, num_len);
-			break;
+			write(1, buffer, num_len);
+			return (num_len);
 		}
 		case 'b':
 		{
-			unsigned int num = va_arg(args, unsigned int);
-			char buffer[33];
-
-			int_to_binary(num, buffer);
-
-
-			printed_chars += write(1, buffer, 33);
-			break;
+			printed_chars = int_to_binary(args);
+			return (printed_chars);
 		}
 		case '%':
 		{
 			char percent = '%';
 
-			printed_chars += write(1, &percent, 1);
-			break;
+			write(1, &percent, 1);
+			return (1);
 		}
 		default:
 		{
-			printed_chars += write(1, &spec, 1);
-			break;
+			char c = spec;
+
+			write(1, &c, 1);
+			return (1);
 		}
 	}
-	return (printed_chars);
+	return (1);
 }
 /**
  * int_to_string - turn integer to string
@@ -154,27 +151,37 @@ int int_to_string(int num, char *buffer)
 }
 /**
  * int_to_binary - turns an integer to binary
- * @num: integer
- * @buffer: pointer
+ * @types: char types
  *
+ * Return: number
  */
-void int_to_binary(unsigned int num, char *buffer)
+int int_to_binary(va_list types)
 {
-	int i;
-	int j = 0;
-	int sig_bits = 0;
+	unsigned int m;
+	unsigned int show = 1 << 31;
+	int i, number = 0;
+	int important_bit_found = 0;
 
-	for (i = 31; i >= 0; i--)
+	m = va_arg(types, unsigned int);
+
+	for (i = 0; i < 32; i++)
 	{
-		if (((num >> i) & 1) == 1)
+		char z = (m & show) ? '1' : '0';
+
+		if (z == '1')
+			important_bit_found = 1;
+
+		if (important_bit_found)
 		{
-			sig_bits = i + 1;
-			break;
+			write(1, &z, 1);
+			number++;
 		}
+		m <<= 1;
 	}
-	for (i = sig_bits - 1; i >= 0; i--)
+	if (!important_bit_found)
 	{
-		buffer[j++] = ((num >> i) & 1) ? '1' : '0';
+		write(1, "0", 1);
+		number++;
 	}
-buffer[j] = '\0';
+	return (number);
 }
