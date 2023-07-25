@@ -100,8 +100,15 @@ int handle_spec(char spec, va_list args)
 	}
 	return (printed_chars);
 }
-		int int_to_string(int num, char *buffer)
-		{
+/**
+ * int_to_string - turn integer to string
+ * @num: integer
+ * @buffer: pointer
+ *
+ * Return: integer
+ */
+int int_to_string(int num, char *buffer)
+{
 			int num_len = 0;
 			int is_negative = 0;
 			char temp_buffer[20];
@@ -110,8 +117,8 @@ int handle_spec(char spec, va_list args)
 
 			if (num == 0)
 			{
-			 buffer[i++] = '0';
-			 num_len++;
+				buffer[i++] = '0';
+				num_len++;
 			}
 			else
 			{
@@ -133,4 +140,4 @@ int handle_spec(char spec, va_list args)
 			for (j = 0; j < i; j++)
 				buffer[j] = temp_buffer[i - j - 1];
 			return (num_len + is_negative);
-		}
+}
