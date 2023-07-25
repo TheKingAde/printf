@@ -4,4 +4,6 @@
 Write a function that produces output according to a format.
 
 1. Education is when you read the fine print. Experience is what you get if you don't
-Handle the following conversion specifiers:
+Handle the following conversion specifiers; d , i.
+
+2. Handle the custom conversion b(unsigned int argument is converted to binary)
