@@ -85,6 +85,17 @@ int handle_spec(char spec, va_list args)
 			printed_chars += write(1, buffer, num_len);
 			break;
 		}
+		case 'b':
+		{
+			unsigned int num = va_arg(args, unsigned int);
+			char buffer[33];
+
+			int_to_binary(num, buffer);
+
+
+			printed_chars += write(1, buffer, len);
+			break;
+		}
 		case '%':
 		{
 			char percent = '%';
@@ -140,4 +151,30 @@ int int_to_string(int num, char *buffer)
 			for (j = 0; j < i; j++)
 				buffer[j] = temp_buffer[i - j - 1];
 			return (num_len + is_negative);
+}
+/**
+ * int_to_binary - turns an integer to binary
+ * @num: integer
+ * @buffer: pointer
+ *
+ */
+void int_to_binary(unsigned int num, char *buffer)
+{
+	int i;
+	int j = 0;
+	int sig_bits = 0;
+
+	for (i = 31; i >= 0; i--)
+	{
+		if (((num >> i) & 1) == 1)
+		{
+			sig_bits = i + 1;
+			break;
+		}
+	}
+	for (i = sig_bits - 1; i >= 0; i--)
+	{
+		buffer[j++] = ((num >> i) & 1) + '0';
+	}
+buffer[j] = '\0';
 }

@@ -8,4 +8,5 @@
 int _printf(const char *format, ...);
 int handle_spec(char spec, va_list args);
 int int_to_string(int num, char *buffer);
+void int_to_binary(unsigned int num, char *buffer);
 #endif
