@@ -40,6 +40,7 @@ int _printf(const char *format, ...)
 
 /**
  * handle_spec - handle each specific case
+ * int_to_string - convert integer to  string
  * @spec: specific case
  * @args: argument passed
  *
@@ -79,7 +80,8 @@ int handle_spec(char spec, va_list args)
 		{
 			int num = va_arg(args, int);
 			char buffer[20];
-			int num_len = int_to_str(num, buffer);
+			int num_len = int_to_string(num, buffer);
+
 			printed_chars += write(1, buffer, num_len);
 			break;
 		}
@@ -98,7 +100,7 @@ int handle_spec(char spec, va_list args)
 	}
 	return (printed_chars);
 }
-		int int_to_str(int num, char *buffer)
+		int int_to_string(int num, char *buffer)
 		{
 			int num_len = 0;
 			int is_negative = 0;
@@ -111,12 +113,12 @@ int handle_spec(char spec, va_list args)
 			 buffer[i++] = '0';
 			 num_len++;
 			}
-			else 
+			else
 			{
 				if (num < 0)
 				{
 					is_negative = 1;
-					num = - num;
+					num = -num;
 				}
 				while (num > 0)
 				{
@@ -129,6 +131,6 @@ int handle_spec(char spec, va_list args)
 			}
 
 			for (j = 0; j < i; j++)
-				buffer[j] = temp_buffer[i-j-1];
-			return num_len + is_negative;
+				buffer[j] = temp_buffer[i - j - 1];
+			return (num_len + is_negative);
 		}
